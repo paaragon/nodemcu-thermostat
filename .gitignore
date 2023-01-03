@@ -1,3 +1,10 @@
 nodemcu/config.py
 mqtt_to_sql/config.py
 server/init_script.sh
+http_to_mqtt/node_modules
+http_to_mqtt/data
+http_to_mqtt/logs
+http_to_mqtt/.DS_Store
+http_to_mqtt/dist
+http_to_mqtt/coverage
+http_to_mqtt/config/development.json

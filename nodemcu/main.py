@@ -168,6 +168,7 @@ publish_startup_topic = config.MQTT_TOPIC_PREFIX + \
     "/startup/" + local_client_id
 mqtt_client.publish(publish_startup_topic, "Hello world!")
 publish_set_topic = config.MQTT_TOPIC_PREFIX + "/set/" + local_client_id
+mqtt_client.publish(publish_set_topic, str(setted_temp))
 while True:
     mqtt_client.check_msg()
 

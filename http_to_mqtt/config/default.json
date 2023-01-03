@@ -3,7 +3,8 @@
         "security": {
             "<user>": "<pass>"
         },
-        "port": 3001
+        "port": 3001,
+        "version": 1
     },
     "log": {
         "level": "debug",

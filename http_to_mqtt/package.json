@@ -38,6 +38,7 @@
     "express-http-context": "^1.2.4",
     "mqtt": "^4.3.7",
     "myfavouritelogger": "^1.4.1",
+    "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.0.8",
     "ts-node-dev": "^2.0.0",

@@ -8,25 +8,23 @@ const log = logger.child({ name: 'thermostat.ctrl.ts' });
 
 export default class ExampleController {
   static async setTemperature(req: SetTemperatureRequest): Promise<SetTemperatureResponse> {
-    const { operation } = req.params;
+    const { temp } = req.body;
 
-    const current = await settedRepo.getCurrentTemp();
-
-    let currentTemp: number;
-    if (current) {
-      currentTemp = current.setted;
-    } else {
-      currentTemp = 20;
-    }
-
-    currentTemp += operation === 'increase' ? 1 : -1;
-
-    log.info(`Setting temp ${currentTemp}`);
-    mqttService.publish('thermostat/set/grafana', currentTemp.toString());
+    log.info(`Setting temp ${temp}`);
+    mqttService.publish('thermostat/set/grafana', temp.toString());
 
     return {
       error: false,
       result: 'OK',
+    };
+  }
+
+  static async getSettedTemperature(): Promise<SetTemperatureResponse> {
+    const current = await settedRepo.getCurrentTemp();
+
+    return {
+      error: false,
+      result: current?.setted,
     };
   }
 }

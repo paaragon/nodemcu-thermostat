@@ -13,4 +13,17 @@ app.post(
     Controller.run(ThermostatController.setTemperature),
 );
 
+app.post(
+    '/temp',
+    authCheck,
+    Controller.validate(SetTemperatureRequest),
+    Controller.run(ThermostatController.setTemperature),
+);
+
+app.get(
+    '/temp',
+    authCheck,
+    Controller.run(ThermostatController.getSettedTemperature),
+);
+
 export default app;

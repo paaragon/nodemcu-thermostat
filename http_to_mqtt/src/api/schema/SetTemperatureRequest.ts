@@ -3,17 +3,17 @@ import HttpException from '../exceptions/HttpException';
 import Request from './Request';
 
 export default class SetTemperatureRequest extends Request {
-  params: {
-    operation: 'increase' | 'decrease';
-  };
+  body: {
+    temp: number
+  }
 
   constructor() {
     super();
   }
 
   public validate(req: ExpressRequest): boolean {
-    if (!req.params.operation && !['increase', 'decrease'].includes(req.params.operation)) {
-      throw new HttpException(400, 'Invalid operation');
+    if (!req.body.temp) {
+      throw new HttpException(400, 'Invalid temp');
     }
 
     return true;

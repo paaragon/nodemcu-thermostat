@@ -1,0 +1,3 @@
+nodemcu/config.py
+mqtt_to_sql/config.py
+server/init_script.sh

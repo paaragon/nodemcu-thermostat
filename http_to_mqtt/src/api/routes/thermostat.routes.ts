@@ -7,13 +7,6 @@ import SetTemperatureRequest from '../schema/SetTemperatureRequest';
 const app = customExpress();
 
 app.post(
-    '/temp/:operation',
-    authCheck,
-    Controller.validate(SetTemperatureRequest),
-    Controller.run(ThermostatController.setTemperature),
-);
-
-app.post(
     '/temp',
     authCheck,
     Controller.validate(SetTemperatureRequest),

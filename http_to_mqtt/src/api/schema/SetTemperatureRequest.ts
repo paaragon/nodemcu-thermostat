@@ -4,7 +4,8 @@ import Request from './Request';
 
 export default class SetTemperatureRequest extends Request {
   body: {
-    temp: number
+    temp: number,
+    petitioner?: string
   }
 
   constructor() {

@@ -8,10 +8,10 @@ const log = logger.child({ name: 'thermostat.ctrl.ts' });
 
 export default class ExampleController {
   static async setTemperature(req: SetTemperatureRequest): Promise<SetTemperatureResponse> {
-    const { temp } = req.body;
+    const { temp, petitioner } = req.body;
 
     log.info(`Setting temp ${temp}`);
-    mqttService.publish('thermostat/set/grafana', temp.toString());
+    mqttService.publish(`thermostat/set/${petitioner || 'grafana'}`, temp.toString());
 
     return {
       error: false,

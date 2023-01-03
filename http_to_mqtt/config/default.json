@@ -1,0 +1,21 @@
+{
+    "api": {
+        "security": {
+            "<user>": "<pass>"
+        }
+    },
+    "log": {
+        "level": "debug",
+        "color": true
+    },
+    "db": {
+        "host": "<host>",
+        "post": "<port>",
+        "db": "<db>",
+        "user": "<user>",
+        "password": "<pass>"
+    },
+    "mqtt": {
+        "host": "<host>"
+    }
+}

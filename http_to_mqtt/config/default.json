@@ -2,7 +2,8 @@
     "api": {
         "security": {
             "<user>": "<pass>"
-        }
+        },
+        "port": 3001
     },
     "log": {
         "level": "debug",

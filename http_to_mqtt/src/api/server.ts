@@ -26,10 +26,7 @@ export default class Server {
       log: customExpressLog.info.bind(customExpressLog),
     });
 
-    this.app.use(cors({
-      origin: true,
-      credentials: true,
-    }));
+    this.app.use(cors());
     this.app.use(express.json());
     this.app.use(httpContext.middleware);
     this.app.use(requestUuid);

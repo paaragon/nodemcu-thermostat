@@ -8,6 +8,7 @@ from button import Button
 import ubinascii
 from mqtt import MQTT
 import sys
+import json
 
 """
 PIN_NUMBERS
@@ -90,6 +91,8 @@ def mqtt_set_temp(payload):
 
 def subscription_callback(topic, msg):
     global local_client_id
+    global curr_temp
+    global curr_hum
     topic_tokens = topic.decode().split("/")
     if len(topic_tokens) == 0:
         print("Payload error")
@@ -106,7 +109,12 @@ def subscription_callback(topic, msg):
         mqtt_set_temp(msg)
         return
     if operation == "read" and client_id != local_client_id and mode == "R":
-        curr_temp = int(msg)
+        fixed_quotes = msg.replace("'", "\"")
+        read_info = json.loads(fixed_quotes)
+        curr_temp = read_info["temp"]
+        curr_hum = result["hum"]
+        evaluate_temp()
+        print_info_text()
         return
 
     print((topic.decode(), msg.decode()))
@@ -179,8 +187,8 @@ while True:
     if time.time() - lcd_display_latest_on > config.LCD_DISPLAY_ON_DURATION_SEC:
         lcd_display.turn_off()
 
-    # read the sensor
-    if time.time() - sensor_latest_read > config.SENSOR_READ_DELAY_SEC:
+    # read the local sensor
+    if time.time() - sensor_latest_read > config.SENSOR_READ_DELAY_SEC and mode == "L":
         sensor_latest_read = time.time()
         result = dht_sensor.read()
         if result["temp"] is not None:

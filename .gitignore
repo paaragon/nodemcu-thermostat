@@ -1,4 +1,4 @@
-station_satellite/config.py
+station_satelite/config.py
 station_main/config.py
 mqtt_to_sql/config.py
 server/init_script.sh

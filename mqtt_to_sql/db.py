@@ -21,21 +21,21 @@ def db():
         db_pool.putconn(con)
 
 
-def save_startup(msg):
+def save_startup(station_id, msg):
     with db() as (conn, cursor):
         try:
-            cursor.execute("INSERT INTO startup (date, message) VALUES (now(), %s)",
-                           (msg,))
+            cursor.execute("INSERT INTO startup (date, message, station_id) VALUES (now(), %s, %s)",
+                           (msg, station_id))
             conn.commit()
         except Exception as e:
             print(str(e))
 
 
-def save_read(temperature, humidity):
+def save_read(station_id, temperature, humidity):
     with db() as (conn, cursor):
         try:
-            cursor.execute("INSERT INTO read (date, temperature, humidity) VALUES (now(), %s, %s)",
-                           (temperature, humidity))
+            cursor.execute("INSERT INTO read (date, temperature, humidity, station_id) VALUES (now(), %s, %s, %s)",
+                           (temperature, humidity, station_id))
             conn.commit()
         except Exception as e:
             print(str(e))

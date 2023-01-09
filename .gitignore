@@ -1,4 +1,5 @@
-nodemcu/config.py
+station_satellite/config.py
+station_main/config.py
 mqtt_to_sql/config.py
 server/init_script.sh
 http_to_mqtt/node_modules

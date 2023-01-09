@@ -105,6 +105,9 @@ def subscription_callback(topic, msg):
     if operation == "set" and client_id != local_client_id:
         mqtt_set_temp(msg)
         return
+    if operation == "read" and client_id != local_client_id and mode == "R":
+        curr_temp = int(msg)
+        return
 
     print((topic.decode(), msg.decode()))
 

@@ -3,7 +3,6 @@
 import paho.mqtt.client as mqtt
 import config
 import handle_messages
-import db
 
 
 def on_connect(client, userdata, flags, rc):
@@ -14,17 +13,20 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     topic = msg.topic
     payload = msg.payload.decode()
-    print(topic+" "+payload)
+    print(topic + " " + payload)
     topic_tokens = msg.topic.split("/")
     method = topic_tokens[1]
+
     if method == "read":
-        handle_messages.handle_read(payload)
+        station_id = topic_tokens[2]
+        handle_messages.handle_read(station_id, payload)
     elif method == "status":
         handle_messages.handle_status(payload)
     elif method == "set":
         handle_messages.handle_set(payload)
     elif method == "startup":
-        handle_messages.handle_startup(payload)
+        station_id = topic_tokens[2]
+        handle_messages.handle_startup(station_id, payload)
     else:
         print("unknown method " + method)
 

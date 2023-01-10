@@ -89,10 +89,17 @@ def mqtt_set_temp(payload):
         print(str(e))
 
 
-def subscription_callback(topic, msg):
-    global local_client_id
+def set_temp(read_info):
     global curr_temp
     global curr_hum
+    curr_temp = read_info["temp"]
+    curr_hum = result["hum"]
+    evaluate_temp()
+    print_info_text()
+
+
+def subscription_callback(topic, msg):
+    global local_client_id
     topic_tokens = topic.decode().split("/")
     if len(topic_tokens) == 0:
         print("Payload error")
@@ -111,10 +118,7 @@ def subscription_callback(topic, msg):
     if operation == "read" and client_id != local_client_id and mode == "R":
         fixed_quotes = msg.replace("'", "\"")
         read_info = json.loads(fixed_quotes)
-        curr_temp = read_info["temp"]
-        curr_hum = result["hum"]
-        evaluate_temp()
-        print_info_text()
+        set_temp(read_info)
         return
 
     print((topic.decode(), msg.decode()))
@@ -188,15 +192,13 @@ while True:
         lcd_display.turn_off()
 
     # read the local sensor
-    if time.time() - sensor_latest_read > config.SENSOR_READ_DELAY_SEC and mode == "L":
+    if time.time() - sensor_latest_read > config.SENSOR_READ_DELAY_SEC:
         sensor_latest_read = time.time()
         result = dht_sensor.read()
         if result["temp"] is not None:
-            curr_temp = result["temp"]
-            curr_hum = result["hum"]
             mqtt_client.publish(publish_read_topic, str(result))
-            evaluate_temp()
-            print_info_text()
+            if mode == "L":
+                set_temp(result)
 
     # increase setted_temp
     if button_1.state() == "DOWN":

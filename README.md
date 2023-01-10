@@ -11,7 +11,6 @@ The main station has a thermometer and a relay connected to the heater. It opens
     3. Decrease the setted temperature
     4. Increase the setted temperature
 
-
-### Satelite station
+### Satelite station
 
 This station only has a thermometer and the microcrontroller. It sends the measures to the MQTT broker and if the main station is in "remote mode" that will be the temperature setted to control the heater

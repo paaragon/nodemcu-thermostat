@@ -21,6 +21,11 @@ def handle_status(msg):
     db.save_status(int(msg))
 
 
-def handle_set(msg):
+def handle_mode(msg):
+    print("handle_mode")
+    db.save_mode(msg)
+
+
+def handle_set(client_id, msg):
     print("handle_set")
-    db.save_set(int(msg))
+    db.save_set(client_id, int(msg))

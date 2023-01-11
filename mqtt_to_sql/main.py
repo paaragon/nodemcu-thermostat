@@ -22,8 +22,10 @@ def on_message(client, userdata, msg):
         handle_messages.handle_read(station_id, payload)
     elif method == "status":
         handle_messages.handle_status(payload)
+    elif method == "mode":
+        handle_messages.handle_mode(payload)
     elif method == "set":
-        handle_messages.handle_set(payload)
+        handle_messages.handle_set(station_id, payload)
     elif method == "startup":
         station_id = topic_tokens[2]
         handle_messages.handle_startup(station_id, payload)

@@ -1,3 +1,4 @@
+import modeRepo from '../../db/repository/mode.repo';
 import settedRepo from '../../db/repository/setted.repo';
 import { logger } from '../../logger/logger';
 import mqttService from '../../services/mqtt.service';
@@ -20,11 +21,16 @@ export default class ExampleController {
   }
 
   static async getSettedTemperature(): Promise<SetTemperatureResponse> {
-    const current = await settedRepo.getCurrentTemp();
+    const lastRead = await settedRepo.getLastTemp();
+    const lastMode = await modeRepo.getLastMode();
+
 
     return {
       error: false,
-      result: current?.setted,
-    };
+      result: {
+        temp: lastRead?.setted,
+        mode: lastMode.mode,
+      },
+    }
   }
 }

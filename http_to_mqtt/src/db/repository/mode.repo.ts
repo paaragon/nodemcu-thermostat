@@ -1,11 +1,11 @@
 /* eslint-disable indent */
 import { AppDataSource } from '../db-connector';
-import SettedDB from '../entities/setted.db';
+import ModeDB from '../entities/mode.db';
 
 export default {
-  async getLastTemp(): Promise<SettedDB> {
-    const result: SettedDB[] = await AppDataSource
-      .getRepository(SettedDB)
+  async getLastMode(): Promise<ModeDB> {
+    const result: ModeDB[] = await AppDataSource
+      .getRepository(ModeDB)
       .find({
         order: {
           date: 'DESC',

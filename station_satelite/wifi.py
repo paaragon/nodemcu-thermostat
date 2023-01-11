@@ -12,6 +12,9 @@ class Wifi:
         max_wait = config.MAX_CONN_TIME
         station = network.WLAN(network.STA_IF)
 
+        ap_if = network.WLAN(network.AP_IF)
+        ap_if.active(False)
+
         station.active(True)
         station.connect(self.ssid, self.password)
 

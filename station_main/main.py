@@ -185,51 +185,56 @@ mqtt_client.publish(publish_startup_topic, "Hello world!")
 publish_set_topic = config.MQTT_TOPIC_PREFIX + "/set/" + local_client_id
 mqtt_client.publish(publish_set_topic, str(setted_temp))
 while True:
-    mqtt_client.check_msg()
+    try:
 
-    # turn off lcd_display
-    if time.time() - lcd_display_latest_on > config.LCD_DISPLAY_ON_DURATION_SEC:
-        lcd_display.turn_off()
+        mqtt_client.check_msg()
+        # turn off lcd_display
+        if time.time() - lcd_display_latest_on > config.LCD_DISPLAY_ON_DURATION_SEC:
+            lcd_display.turn_off()
 
-    # read the local sensor
-    if time.time() - sensor_latest_read > config.SENSOR_READ_DELAY_SEC:
-        sensor_latest_read = time.time()
-        result = dht_sensor.read()
-        if result["temp"] is not None:
-            mqtt_client.publish(publish_read_topic, str(result))
+        # read the local sensor
+        if time.time() - sensor_latest_read > config.SENSOR_READ_DELAY_SEC:
+            sensor_latest_read = time.time()
+            result = dht_sensor.read()
+            if result["temp"] is not None:
+                mqtt_client.publish(publish_read_topic, str(result))
+                if mode == "L":
+                    set_temp(result)
+
+        # increase setted_temp
+        if button_1.state() == "DOWN":
+            print("btn_1 down")
+            setted_temp += 1
+            evaluate_temp()
+            lcd_display.turn_on()
+            lcd_display_latest_on = time.time()
+            print_info_text()
+            mqtt_client.publish(publish_set_topic, str(setted_temp))
+
+        # decrease setted_temp
+        if button_2.state() == "DOWN":
+            setted_temp -= 1
+            evaluate_temp()
+            lcd_display.turn_on()
+            lcd_display_latest_on = time.time()
+            print_info_text()
+            mqtt_client.publish(publish_set_topic, str(setted_temp))
+
+        # turn on lcd_display
+        if button_3.state() == "DOWN":
+            lcd_display.turn_on()
+            lcd_display_latest_on = time.time()
+
+        # change to remote/local mode
+        if button_4.state() == "DOWN":
             if mode == "L":
-                set_temp(result)
+                mode = "R"
+            else:
+                mode = "L"
+            lcd_display.turn_on()
+            lcd_display_latest_on = time.time()
+            print_info_text()
+    except Exception as e:
+        print("error en el bucle principal")
+        print(str(e))
 
-    # increase setted_temp
-    if button_1.state() == "DOWN":
-        print("btn_1 down")
-        setted_temp += 1
-        evaluate_temp()
-        lcd_display.turn_on()
-        lcd_display_latest_on = time.time()
-        print_info_text()
-        mqtt_client.publish(publish_set_topic, str(setted_temp))
-
-    # decrease setted_temp
-    if button_2.state() == "DOWN":
-        setted_temp -= 1
-        evaluate_temp()
-        lcd_display.turn_on()
-        lcd_display_latest_on = time.time()
-        print_info_text()
-        mqtt_client.publish(publish_set_topic, str(setted_temp))
-
-    # turn on lcd_display
-    if button_3.state() == "DOWN":
-        lcd_display.turn_on()
-        lcd_display_latest_on = time.time()
-
-    # change to remote/local mode
-    if button_4.state() == "DOWN":
-        if mode == "L":
-            mode = "R"
-        else:
-            mode = "L"
-        lcd_display.turn_on()
-        lcd_display_latest_on = time.time()
-        print_info_text()

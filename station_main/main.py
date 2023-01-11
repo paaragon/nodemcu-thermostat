@@ -184,6 +184,7 @@ publish_startup_topic = config.MQTT_TOPIC_PREFIX + \
 mqtt_client.publish(publish_startup_topic, "Hello world!")
 publish_set_topic = config.MQTT_TOPIC_PREFIX + "/set/" + local_client_id
 mqtt_client.publish(publish_set_topic, str(setted_temp))
+publish_mode_topic = config.MQTT_TOPIC_PREFIX + "/mode/" + local_client_id
 while True:
     try:
 
@@ -231,6 +232,7 @@ while True:
                 mode = "R"
             else:
                 mode = "L"
+            mqtt_client.publish(publish_mode_topic, mode)
             lcd_display.turn_on()
             lcd_display_latest_on = time.time()
             print_info_text()

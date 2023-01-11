@@ -98,8 +98,18 @@ def set_temp(read_info):
     print_info_text()
 
 
+def set_mode(m):
+    global mode
+    global publish_mode_topic
+    mode = m
+    mqtt_client.publish(publish_mode_topic, mode)
+    evaluate_temp()
+    print_info_text()
+
+
 def subscription_callback(topic, msg):
     global local_client_id
+    global mode
     topic_tokens = topic.decode().split("/")
     if len(topic_tokens) == 0:
         print("Payload error")
@@ -121,6 +131,9 @@ def subscription_callback(topic, msg):
         fixed_quotes = msg.decode().replace("'", "\"")
         read_info = json.loads(fixed_quotes)
         set_temp(read_info)
+        return
+    if operation == "setmode":
+        set_mode(msg.decode())
         return
 
     print((topic.decode(), msg.decode()))
@@ -239,4 +252,3 @@ while True:
         lcd_display.turn_on()
         lcd_display_latest_on = time.time()
         print_info_text()
-

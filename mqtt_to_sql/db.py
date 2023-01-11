@@ -65,7 +65,7 @@ def save_set(client_id, setted):
     with db() as (conn, cursor):
         try:
             cursor.execute("INSERT INTO setted (date, setted, client_id) VALUES (now(), %s, %s)",
-                           (client_id, setted))
+                           (setted, client_id))
             conn.commit()
         except Exception as e:
             print(str(e))

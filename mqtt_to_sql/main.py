@@ -16,7 +16,6 @@ def on_message(client, userdata, msg):
     print(topic + " " + payload)
     topic_tokens = msg.topic.split("/")
     method = topic_tokens[1]
-
     if method == "read":
         station_id = topic_tokens[2]
         handle_messages.handle_read(station_id, payload)
@@ -25,6 +24,7 @@ def on_message(client, userdata, msg):
     elif method == "mode":
         handle_messages.handle_mode(payload)
     elif method == "set":
+        station_id = topic_tokens[2]
         handle_messages.handle_set(station_id, payload)
     elif method == "startup":
         station_id = topic_tokens[2]

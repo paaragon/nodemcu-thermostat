@@ -54,7 +54,7 @@ def save_status(status):
 def save_mode(mode):
     with db() as (conn, cursor):
         try:
-            cursor.execute("INSERT INTO mode (date, status) VALUES (now(), %s)",
+            cursor.execute("INSERT INTO mode (date, mode) VALUES (now(), %s)",
                            (mode,))
             conn.commit()
         except Exception as e:
